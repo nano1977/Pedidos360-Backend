@@ -1,10 +1,12 @@
-server:
-  port: 8080
-
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://login.microsoftonline.com/bb5324af-c266-41ed-b36c-a971641c7af2/v2.0
-          jwk-set-uri: https://login.microsoftonline.com/bb5324af-c266-41ed-b36c-a971641c7af2/discovery/v2.0/keys
+  datasource:
+    url: jdbc:postgresql://pedidos360-db-nano.postgres.database.azure.com:5432/postgres?sslmode=require
+    username: adminpedidos
+    password: Duoc2026Pedidos
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect

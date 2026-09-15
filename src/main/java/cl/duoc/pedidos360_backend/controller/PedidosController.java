@@ -1,7 +1,4 @@
 package cl.duoc.pedidos360_backend.controller;
-
-
-
 import java.util.Map;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,8 +16,8 @@ public class PedidosController {
         return Map.of(
             "status", "success",
             "mensaje", "Acceso concedido al BFF de Pedidos360",
-            "usuario", jwt.getClaimAsString("name"),
-            "tenant", jwt.getClaimAsString("tid")
+            "usuario", jwt != null ? jwt.getClaimAsString("name") : "Usuario Local",
+            "tenant", jwt != null ? jwt.getClaimAsString("tid") : "Tenant Local"
         );
     }
 }
