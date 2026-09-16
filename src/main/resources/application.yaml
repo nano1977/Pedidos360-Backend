@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://pedidos360-db-nano.postgres.database.azure.com:5432/postgres?sslmode=require
-    username: adminpedidos
-    password: Duoc2026Pedidos
+    url: ${DB_URL:jdbc:postgresql://pedidos360-db-nano.postgres.database.azure.com:5432/postgres?sslmode=require}
+    username: ${DB_USERNAME:adminpedidos}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -10,3 +10,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://login.microsoftonline.com/bb5324af-c266-41ed-b36c-a971641c7af2/v2.0
+
+logging:
+  level:
+    org.springframework.security: INFO
