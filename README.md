@@ -97,3 +97,10 @@ fetch('[https://esqclflrwc.execute-api.us-east-1.amazonaws.com/api/pedidos](http
   .then(data => console.log(data));
 👤 Autor
 Manuel Álvarez Guevara (@nano1977)
+
+
+### Instrucciones rápidas:
+1. En GitHub, presiona `Ctrl + A` dentro del cuadro de texto y luego la tecla `Borrar` para dejar el editor en blanco.
+2. Pega este texto copiado con `Ctrl + V`.
+3. Haz clic en la pestaña **Preview** arriba para revisar que se vea ordenado.
+4. Presiona **Commit changes...** para guardar.
