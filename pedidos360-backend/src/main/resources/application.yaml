@@ -18,6 +18,29 @@ spring:
         jwt:
           issuer-uri: https://login.microsoftonline.com/72fd0b5a-8a6a-4cff-89f6-bde961f7e250/v2.0
 
+  # Configuración de Conexión a RabbitMQ
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USER:guest}
+    password: ${RABBITMQ_PASS:guest}
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          max-attempts: 3
+
 logging:
   level:
     org.springframework.security: DEBUG
+
+# Nombres centralizados de colas y exchanges para RabbitMQ (Requisito EP3)
+app:
+  rabbitmq:
+    queue: pedidos.queue
+    exchange: pedidos.exchange
+    routing-key: pedidos.routingkey
+    dlq: pedidos.dlq
+    dlx: pedidos.dlx
+    dlx-routing-key: pedidos.dlx.routingkey
