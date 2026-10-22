@@ -30,6 +30,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // Permite ver el error real en vez de un 401 engañoso
+                .requestMatchers("/error").permitAll()
                 // Administración de RabbitMQ: solo administradores (rol de Azure AD)
                 .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                 // Pedidos: se mantiene abierto para no romper el frontend actual

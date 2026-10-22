@@ -1,16 +1,20 @@
 spring:
   datasource:
-    url: jdbc:postgresql://pedidos360-db-nano.postgres.database.azure.com:5432/postgres?sslmode=require
+    url: jdbc:postgresql://pedidos360-db-nano.postgres.database.azure.com:5432/postgres?sslmode=require&tcpKeepAlive=true&socketTimeout=30&connectTimeout=10
     username: adminpedidos
     password: Duoc2026Pedidos
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      max-lifetime: 60000
+      keepalive-time: 30000
+      idle-timeout: 30000
+      connection-timeout: 10000
 
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
 
   security:
     oauth2:
@@ -33,7 +37,7 @@ spring:
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    org.springframework.security: INFO
 
 # Nombres centralizados de colas y exchanges para RabbitMQ (Requisito EP3)
 app:
