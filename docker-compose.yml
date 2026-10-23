@@ -1,0 +1,47 @@
+# Pedidos360 - Clúster RabbitMQ de 2 nodos
+# Levantar:   docker compose up -d
+# Detener:    docker compose down
+# Panel nodo 1: http://localhost:15672   Panel nodo 2: http://localhost:15682
+# Usuario: admin / admin123
+
+x-rabbitmq-entrypoint: &rabbitmq-entrypoint
+  # Ambos nodos necesitan la MISMA cookie de Erlang para formar el clúster
+  - bash
+  - -c
+  - |
+    printf 'pedidos360clustercookie' > /var/lib/rabbitmq/.erlang.cookie
+    chmod 400 /var/lib/rabbitmq/.erlang.cookie
+    chown rabbitmq:rabbitmq /var/lib/rabbitmq/.erlang.cookie
+    exec docker-entrypoint.sh rabbitmq-server
+
+services:
+  rabbitmq1:
+    image: rabbitmq:4-management
+    hostname: rabbitmq1
+    container_name: rabbitmq1
+    entrypoint: *rabbitmq-entrypoint
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    ports:
+      - "5672:5672"     # AMQP (aplicaciones)
+      - "15672:15672"   # Panel de administración
+    networks:
+      - rabbitmq-net
+
+  rabbitmq2:
+    image: rabbitmq:4-management
+    hostname: rabbitmq2
+    container_name: rabbitmq2
+    entrypoint: *rabbitmq-entrypoint
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    ports:
+      - "5682:5672"
+    depends_on:
+      - rabbitmq1
+    networks:
+      - rabbitmq-net
+
+networks:
+  rabbitmq-net:
+    driver: bridge
