@@ -48,7 +48,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        String jwkSetUri = "https://login.microsoftonline.com/72fd0b5a-8a6a-4cff-89f6-bde961f7e250/discovery/v2.0/keys";
+        String jwkSetUri = "https://login.microsoftonline.com/bb5324af-c266-41ed-b36c-a971641c7af2/discovery/v2.0/keys";
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
         jwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(new JwtTimestampValidator()));
         return jwtDecoder;
