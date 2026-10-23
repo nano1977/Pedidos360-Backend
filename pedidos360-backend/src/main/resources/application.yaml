@@ -22,29 +22,33 @@ spring:
         jwt:
           issuer-uri: https://login.microsoftonline.com/bb5324af-c266-41ed-b36c-a971641c7af2/v2.0
 
-  # Configuración de Conexión a RabbitMQ
+  # Conexión al clúster RabbitMQ (2 nodos): si uno cae, se usa el otro
   rabbitmq:
-    host: ${RABBITMQ_HOST:localhost}
-    port: ${RABBITMQ_PORT:5672}
-    username: ${RABBITMQ_USER:guest}
-    password: ${RABBITMQ_PASS:guest}
-    listener:
-      simple:
-        acknowledge-mode: auto
-        retry:
-          enabled: true
-          max-attempts: 3
+    addresses: ${RABBITMQ_ADDRESSES:localhost:5672,localhost:5682}
+    username: ${RABBITMQ_USER:admin}
+    password: ${RABBITMQ_PASS:admin123}
 
 logging:
   level:
     org.springframework.security: INFO
 
-# Nombres centralizados de colas y exchanges para RabbitMQ (Requisito EP3)
+# Nombres centralizados de exchanges, colas, DLQ y routing keys
 app:
   rabbitmq:
-    queue: pedidos.queue
-    exchange: pedidos.exchange
-    routing-key: pedidos.routingkey
-    dlq: pedidos.dlq
-    dlx: pedidos.dlx
-    dlx-routing-key: pedidos.dlx.routingkey
+    exchanges:
+      topic: pedidos.topic
+      direct: pedidos.direct
+      dlx: pedidos.dlx
+    queues:
+      notificaciones: notificaciones.queue
+      tickets: tickets.queue
+      documentos: documentos.queue
+    dlqs:
+      notificaciones: notificaciones.dlq
+      tickets: tickets.dlq
+      documentos: documentos.dlq
+    routing-keys:
+      pedido-creado: pedido.creado          # se publica en el exchange topic
+      notificaciones-pattern: "pedido.*"    # binding del topic hacia notificaciones
+      tickets: ticket.generar
+      documentos: documento.generar

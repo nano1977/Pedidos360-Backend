@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: worker-service
+
+  # Conexión al clúster RabbitMQ (2 nodos)
+  rabbitmq:
+    addresses: ${RABBITMQ_ADDRESSES:localhost:5672,localhost:5682}
+    username: ${RABBITMQ_USER:admin}
+    password: ${RABBITMQ_PASS:admin123}
+    listener:
+      simple:
+        acknowledge-mode: manual      # cada consumidor confirma con basicAck / basicNack
+        prefetch: 10
+        missing-queues-fatal: false   # si las colas aún no existen, reintenta en vez de caerse
+        default-requeue-rejected: false
+
+# Nombres centralizados (los mismos que declara pedidos-service)
+app:
+  rabbitmq:
+    queues:
+      notificaciones: notificaciones.queue
+      tickets: tickets.queue
+      documentos: documentos.queue
+    dlqs:
+      notificaciones: notificaciones.dlq
+      tickets: tickets.dlq
+      documentos: documentos.dlq

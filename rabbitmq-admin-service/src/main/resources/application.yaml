@@ -1,0 +1,18 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: rabbitmq-admin-service
+
+  # Conexión al clúster RabbitMQ (2 nodos)
+  rabbitmq:
+    addresses: ${RABBITMQ_ADDRESSES:localhost:5672,localhost:5682}
+    username: ${RABBITMQ_USER:admin}
+    password: ${RABBITMQ_PASS:admin123}
+
+# Seguridad: llaves públicas del tenant de Azure AD donde está registrada la aplicación
+app:
+  security:
+    jwk-set-uri: https://login.microsoftonline.com/bb5324af-c266-41ed-b36c-a971641c7af2/discovery/v2.0/keys
+    rol-admin: ROLE_ADMIN
