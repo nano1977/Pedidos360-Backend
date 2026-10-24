@@ -29,13 +29,12 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // Preflight CORS del navegador
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Permite ver el error real en vez de un 401 engañoso
                 .requestMatchers("/error").permitAll()
-                // Administración de RabbitMQ: solo administradores (rol de Azure AD)
-                .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-                // Pedidos: se mantiene abierto para no romper el frontend actual
-                .requestMatchers("/api/pedidos", "/api/pedidos/**").permitAll()
+                // Pedidos: requiere un JWT válido emitido por Azure AD (el frontend lo envía con MSAL)
+                .requestMatchers("/api/pedidos", "/api/pedidos/**").authenticated()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt

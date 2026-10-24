@@ -16,3 +16,6 @@ app:
   security:
     jwk-set-uri: https://login.microsoftonline.com/bb5324af-c266-41ed-b36c-a971641c7af2/discovery/v2.0/keys
     rol-admin: ROLE_ADMIN
+    # Cuentas que reciben ROLE_ADMIN aunque el tenant no permita asignarles el App Role
+    # (separadas por coma). Dejar vacío para depender solo del claim "roles" de Azure AD.
+    admin-users: ${ADMIN_USERS:man.alvarezg@duocuc.cl}
